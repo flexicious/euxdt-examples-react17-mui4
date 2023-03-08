@@ -187,6 +187,36 @@ export const materialAdapter: LibraryAdapter = {
       />
     );
   },
+  createTextArea: (props): unknown => {
+    const {
+      onChange,
+      placeholder,
+      onKeyDown,
+      ref,
+      style,
+      readOnly,
+      onClick,
+      value,
+      defaultValue,
+    } = props;
+    return (
+      <TextField
+        value={value}
+        defaultValue={defaultValue}
+        onChange={(e) => {
+          onChange?.(e.target.value);
+        }}
+        onKeyDown={onKeyDown}
+        inputProps={{ readOnly, onClick, placeholder }}
+        style={style}
+        inputRef={ref as Ref<any>}
+        variant="standard"
+        multiline
+        rows={4}
+      />
+    );
+  },
+  
   createCheckBox: (props: GridCheckBoxProps) => {
     const { onChange, value, ref } = props;
     return (

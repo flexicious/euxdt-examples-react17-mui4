@@ -1,9 +1,9 @@
 {
   "name": "euxdt-react17-mui4",
   "dependencies": {
-    "@euxdt/grid-core": "^0.0.13",
-    "@euxdt/grid-export": "^0.0.10",
-    "@euxdt/grid-react": "^0.0.13",
+    "@euxdt/grid-core": "^0.0.29",
+    "@euxdt/grid-export": "^0.0.29",
+    "@euxdt/grid-react": "^0.0.29",
     "@material-ui/core": "~4.11.2",
     "@material-ui/icons": "~4.11.2",
     "@material-ui/pickers": "^3.3.10",
