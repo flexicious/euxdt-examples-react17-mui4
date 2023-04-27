@@ -1,5 +1,5 @@
-import { createColumn, createFilterBehavior, FilterOperation } from "@euxdt/grid-core";
-import { createDateFilterOptions, createNumericRangeFilterOptions, createTextInputFilterOptions, ReactDataGrid } from "@euxdt/grid-react";
+import { createColumn, createFilterBehavior, FilterOperation } from "@ezgrid/grid-core";
+import { createDateFilterOptions, createNumericRangeFilterOptions, createTextInputFilterOptions, ReactDataGrid } from "@ezgrid/grid-react";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { makeStyles } from "@material-ui/core/styles";

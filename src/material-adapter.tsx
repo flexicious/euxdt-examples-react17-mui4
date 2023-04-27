@@ -7,7 +7,7 @@ import {
   LibraryAdapter,
   TreeNodeType,
   VirtualTreeNode,
-} from "@euxdt/grid-core";
+} from "@ezgrid/grid-core";
 import {
   AddCircle,
   ArrowBack,
@@ -16,9 +16,11 @@ import {
   DeleteOutline,
   DoneOutline,
   Edit,
+  FileCopy,
+  EditAttributes,
   ExpandLess,
   ExpandMore,
-  CloudDownload as  FileDownload,
+  CloudDownload as FileDownload,
   Search as FilterAlt,
   FilterList,
   FirstPage,
@@ -31,6 +33,8 @@ import {
   Settings,
   UnfoldLess,
   UnfoldMore,
+  BarChart,
+  ControlPoint
 } from "@material-ui/icons";
 import {
   Checkbox,
@@ -41,27 +45,20 @@ import {
   Select,
   TextField,
   Theme,
+  Button
 } from "@material-ui/core";
 import { MuiPickersUtilsProvider, DatePicker as MuiDatePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment'
 
 
 import { createElement, ReactNode, Ref } from "react";
-export const generateIcon = (
-  icon: ReactNode,
-  { onClick, disabled, title, className }: any
-) => (
-  <IconButton
-    color="primary"
-    key={className}
-    size="small"
-    onClick={onClick}
-    disabled={disabled}
-    title={title}
-  >
-    {icon}
-  </IconButton>
-);
+export const generateIcon = (icon: ReactNode, { onClick, disabled, title, className, style }: any, textAndIcon?: boolean) =>
+  textAndIcon ? <Button color="primary" key={className} size="small" onClick={onClick} disabled={disabled} title={title} style={style} variant="outlined" startIcon={icon}>
+    {title}
+  </Button> :
+    <IconButton color="primary" key={className} size="small" onClick={onClick} disabled={disabled} title={title} style={style}>
+      {icon}
+    </IconButton>;
 
 export const materialNodePropsFunction =
   (theme: Theme) => (node: VirtualTreeNode, props: ElementProps) => {
@@ -126,7 +123,7 @@ export const materialAdapter: LibraryAdapter = {
     return (
       <Select
         onChange={(e) => {
-          onChange?.(e.target.value as string|number);
+          onChange?.(e.target.value as string | number);
         }}
         style={style}
         inputRef={ref as Ref<any>}
@@ -145,7 +142,7 @@ export const materialAdapter: LibraryAdapter = {
   createDateField: (props): unknown => {
     const { onChange, value } = props;
     return (
-        <MuiPickersUtilsProvider utils={MomentUtils}>
+      <MuiPickersUtilsProvider utils={MomentUtils}>
         <MuiDatePicker
           autoOk
           disableToolbar
@@ -153,70 +150,27 @@ export const materialAdapter: LibraryAdapter = {
           InputProps={{
             disableUnderline: true,
           }}
-          onChange={(data)=>onChange?.(data?.toDate())}
+          onChange={(data) => onChange?.(data?.toDate())}
           value={value}
           variant="inline"
         />
       </MuiPickersUtilsProvider>
     );
   },
+
   createTextField: (props): unknown => {
-    const {
-      onChange,
-      placeholder,
-      onKeyDown,
-      ref,
-      style,
-      readOnly,
-      onClick,
-      value,
-      defaultValue,
-    } = props;
-    return (
-      <TextField
-        value={value}
-        defaultValue={defaultValue}
-        onChange={(e) => {
-          onChange?.(e.target.value);
-        }}
-        onKeyDown={onKeyDown}
-        inputProps={{ readOnly, onClick, placeholder }}
-        style={style}
-        inputRef={ref as Ref<any>}
-        variant="standard"
-      />
-    );
+    const { onChange, placeholder, attributes, ref, style, readOnly, onClick, ...rest } = props;
+    return <TextField onChange={(e) => {
+      onChange?.(e.target.value);
+    }} inputProps={{ readOnly, onClick, placeholder }} style={style} inputRef={ref as Ref<any>} variant="standard" {...attributes} {...rest} />;
   },
   createTextArea: (props): unknown => {
-    const {
-      onChange,
-      placeholder,
-      onKeyDown,
-      ref,
-      style,
-      readOnly,
-      onClick,
-      value,
-      defaultValue,
-    } = props;
-    return (
-      <TextField
-        value={value}
-        defaultValue={defaultValue}
-        onChange={(e) => {
-          onChange?.(e.target.value);
-        }}
-        onKeyDown={onKeyDown}
-        inputProps={{ readOnly, onClick, placeholder }}
-        style={style}
-        inputRef={ref as Ref<any>}
-        variant="standard"
-        multiline
-        rows={4}
-      />
-    );
+    const { onChange, placeholder, ref, style, readOnly, onClick, rows, attributes, ...rest } = props;
+    return <TextField onChange={(e) => {
+      onChange?.(e.target.value);
+    }} inputProps={{ readOnly, onClick, placeholder }} style={style} inputRef={ref as Ref<any>} variant="standard" multiline rows={rows || 4}  {...attributes}  {...rest} />;
   },
-  
+
   createCheckBox: (props: GridCheckBoxProps) => {
     const { onChange, value, ref } = props;
     return (
@@ -281,52 +235,61 @@ export const materialAdapter: LibraryAdapter = {
       />
     );
   },
-  createIconButton: (icon: GridIconButton, { props }): unknown => {
+  createIconButton: (icon: GridIconButton, { props }, textAndIcon?: boolean): unknown => {
+    
     if (icon === GridIconButton.PageFirst) {
-      return generateIcon(<FirstPage />, props);
-    } else if (icon === GridIconButton.PagePrevious) {
-      return generateIcon(<ArrowBack />, props);
-    } else if (icon === GridIconButton.PageNext) {
-      return generateIcon(<ArrowForward />, props);
-    } else if (icon === GridIconButton.PageLast) {
-      return generateIcon(<LastPage />, props);
-    } else if (icon === GridIconButton.Settings) {
-      return generateIcon(<Settings />, props);
-    } else if (icon === GridIconButton.SettingsSave) {
-      return generateIcon(<Save />, props);
-    } else if (icon === GridIconButton.FilterBuilder) {
-      return generateIcon(<FilterList />, props);
-    } else if (icon === GridIconButton.SettingsManage) {
-      return generateIcon(<GridView />, props);
-    } else if (icon === GridIconButton.ExpandOne) {
-      return generateIcon(<ExpandMore />, props);
-    } else if (icon === GridIconButton.ExpandAll) {
-      return generateIcon(<UnfoldMore />, props);
-    } else if (icon === GridIconButton.CollapseOne) {
-      return generateIcon(<ExpandLess />, props);
-    } else if (icon === GridIconButton.CollapseAll) {
-      return generateIcon(<UnfoldLess />, props);
-    } else if (icon === GridIconButton.Pdf) {
-      return generateIcon(<PictureAsPdf />, props);
-    } else if (icon === GridIconButton.Excel) {
-      return generateIcon(<FileDownload />, props);
-    } else if (icon === GridIconButton.Cancel) {
-      return generateIcon(<Cancel />, props);
-    } else if (icon === GridIconButton.Reset) {
-      return generateIcon(<RestartAlt />, props);
-    } else if (icon === GridIconButton.Delete) {
-      return generateIcon(<DeleteOutline />, props);
-    } else if (icon === GridIconButton.Ok || icon === GridIconButton.Apply) {
-      return generateIcon(<DoneOutline />, props);
-    } else if (icon === GridIconButton.Filter) {
-      return generateIcon(<FilterAlt />, props);
-    } else if (icon === GridIconButton.Edit) {
-      return generateIcon(<Edit />, props);
-    } else if (icon === GridIconButton.Plus) {
-      return generateIcon(<AddCircle />, props);
-    } else if (icon === GridIconButton.Minus) {
-      return generateIcon(<RemoveCircle />, props);
-    }
+      return generateIcon(<FirstPage />, props, textAndIcon);
+  } else if (icon === GridIconButton.PagePrevious) {
+      return generateIcon(<ArrowBack />, props, textAndIcon);
+  } else if (icon === GridIconButton.PageNext) {
+      return generateIcon(<ArrowForward />, props, textAndIcon);
+  } else if (icon === GridIconButton.PageLast) {
+      return generateIcon(<LastPage />, props, textAndIcon);
+  } else if (icon === GridIconButton.Settings) {
+      return generateIcon(<Settings />, props, textAndIcon);
+  } else if (icon === GridIconButton.SettingsSave) {
+      return generateIcon(<Save />, props, textAndIcon);
+  } else if (icon === GridIconButton.FilterBuilder) {
+      return generateIcon(<FilterList />, props, textAndIcon);
+  } else if (icon === GridIconButton.ChartBuilder) {
+      return generateIcon(<BarChart />, props, textAndIcon);
+  } else if (icon === GridIconButton.SettingsManage) {
+      return generateIcon(<GridView />, props, textAndIcon);
+  } else if (icon === GridIconButton.ExpandOne) {
+      return generateIcon(<ExpandMore />, props, textAndIcon);
+  } else if (icon === GridIconButton.ExpandAll) {
+      return generateIcon(<UnfoldMore />, props, textAndIcon);
+  } else if (icon === GridIconButton.CollapseOne) {
+      return generateIcon(<ExpandLess />, props, textAndIcon);
+  } else if (icon === GridIconButton.CollapseAll) {
+      return generateIcon(<UnfoldLess />, props, textAndIcon);
+  } else if (icon === GridIconButton.Pdf) {
+      return generateIcon(<PictureAsPdf />, props, textAndIcon);
+  } else if (icon === GridIconButton.Excel) {
+      return generateIcon(<FileDownload />, props, textAndIcon);
+  } else if (icon === GridIconButton.Cancel) {
+      return generateIcon(<Cancel />, props, textAndIcon);
+  } else if (icon === GridIconButton.Reset) {
+      return generateIcon(<RestartAlt />, props, textAndIcon);
+  } else if (icon === GridIconButton.Delete) {
+      return generateIcon(<DeleteOutline />, props, textAndIcon);
+  } else if (icon === GridIconButton.Ok || icon === GridIconButton.Apply) {
+      return generateIcon(<DoneOutline />, props, textAndIcon);
+  } else if (icon === GridIconButton.Filter) {
+      return generateIcon(<FilterAlt />, props, textAndIcon);
+  } else if (icon === GridIconButton.Edit) {
+      return generateIcon(<Edit />, props, textAndIcon);
+  } else if (icon === GridIconButton.BulkEdit) {
+      return generateIcon(<EditAttributes />, props, textAndIcon);
+  } else if (icon === GridIconButton.Plus) {
+      return generateIcon(<AddCircle />, props, textAndIcon);
+  } else if (icon === GridIconButton.Minus) {
+      return generateIcon(<RemoveCircle />, props, textAndIcon);
+  } else if (icon === GridIconButton.Copy) {
+      return generateIcon(<FileCopy />, props, textAndIcon);
+  } else if (icon === GridIconButton.Paste) {
+      return generateIcon(<ControlPoint />, props, textAndIcon);
+  }
 
     return { props };
   },

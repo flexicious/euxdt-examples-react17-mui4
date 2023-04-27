@@ -4,8 +4,8 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import App from "./App";
 import theme from "./theme";
-const styles = require("@euxdt/grid-core/styles.css");
-const icons = require("@euxdt/grid-core/icons.css");
+const styles = require("@ezgrid/grid-core/styles.css");
+const icons = require("@ezgrid/grid-core/icons.css");
 
 
 ReactDOM.render(

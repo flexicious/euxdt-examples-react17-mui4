@@ -1,16 +1,18 @@
 {
-  "name": "euxdt-react17-mui4",
+  "name": "ezgrid-react17-mui4",
   "dependencies": {
-    "@euxdt/grid-core": "^0.0.29",
-    "@euxdt/grid-export": "^0.0.29",
-    "@euxdt/grid-react": "^0.0.29",
+    "@date-io/moment": "^1.3.5",
+    "@ezgrid/grid-core": "^0.0.46",
+    "@ezgrid/grid-react": "^0.0.46",
     "@material-ui/core": "~4.11.2",
     "@material-ui/icons": "~4.11.2",
     "@material-ui/pickers": "^3.3.10",
-    "@date-io/moment": "^1.3.5",
+    "cheerio": "^1.0.0-rc.12",
+    "puppeteer": "^19.7.3",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-scripts": "latest",
+    "request": "^2.88.2",
     "typescript": "latest"
   },
   "scripts": {
@@ -18,8 +20,7 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
-    "upgrade-grid": "ncu -u @euxdt/grid-core @euxdt/grid-react && npm install"
-
+    "upgrade-grid": "ncu -u @ezgrid/grid-core @ezgrid/grid-react && npm install"
   },
   "devDependencies": {
     "@types/react-dom": "^17.0.2",
